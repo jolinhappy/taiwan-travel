@@ -10,13 +10,16 @@
       <h2>Welcome to Travel Taiwan</h2>
       <el-form :inline="true" :model="formInline" class="demo-form-inline">
         <el-form-item label="">
-          <el-select placeholder="類別">
+          <el-select placeholder="類別" class="category-select">
             <el-option label="Zone one" value="shanghai"></el-option>
             <el-option label="Zone two" value="beijing"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="">
-          <el-input placeholder="縣市"></el-input>
+          <el-select placeholder="縣市" class="location-select">
+            <el-option label="Zone one" value="shanghai"></el-option>
+            <el-option label="Zone two" value="beijing"></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="onSubmit">
@@ -104,6 +107,15 @@ export default defineComponent({
           }
         }
       }
+      .el-select{
+        &.category-select {
+          width: 107px;
+        }      
+        &.location-select {
+          width: 175px;
+        }
+      }
+
     }
   }
 }
