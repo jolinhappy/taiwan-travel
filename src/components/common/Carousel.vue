@@ -92,6 +92,7 @@ export default defineComponent({
     .el-form {
       display: flex;
       justify-content: center;
+      align-items: center;
       .el-button {
         width: 37px;
         height: 37px;
@@ -119,5 +120,33 @@ export default defineComponent({
     }
   }
 }
+
+@media screen and (min-width: 1200px) {
+  .carousel {
+    .search-form {
+      h2 {
+        font-size: 48px;
+      }
+      .el-form {
+        .el-button {
+          width: 42px;
+          height: 42px;
+        }
+        .el-form-item {
+          margin-right: 19px;
+        }
+        .el-select{
+          &.category-select {
+            width: 191px;
+          }      
+          &.location-select {
+            width: 297px;
+          }
+        }
+      }
+    }
+  }
+}
+
 
 </style>
