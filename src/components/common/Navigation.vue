@@ -5,9 +5,13 @@
       <h1>Travel Taiwan</h1>
     </div>
     <ul class="nav-items">
-      <li class="nav-item">首頁</li>
-      <li class="nav-item">景點導覽</li>
-      <li class="nav-item">觀光活動</li>
+      <li class="nav-item">
+        <router-link to="/">首頁</router-link>
+      </li>
+      <li class="nav-item">
+        <router-link to="/tourist-sight">景點導覽</router-link>
+      </li>
+        <router-link to="/tourist-event">觀光活動</router-link>
     </ul>
   </nav>
 </template>
@@ -47,6 +51,10 @@ nav {
     top: 100%;
     width: 100%;
     background-color: #ffffff;
+    .router-link-exact-active {
+      color: #08A6BB;
+      font-weight: bold;
+    }
     .nav-item:hover {
       color: #08A6BB;
       cursor: pointer;
