@@ -1,18 +1,13 @@
 <template>
   <div class="home">
-    <Carousel/>
+    <Carousel @search="handleSearch"/>
     <section class="card-section">
       <div class="section-title">
         <h2>熱門景點</h2>
         <p class="description">台灣的各個美景，都美不勝收。<br>等你一同來發現這座寶島的奧妙！</p>
       </div>
       <div class="card-list">
-        <Card @open="openDetail"/>
-        <Card/>
-        <Card/> 
-        <Card/>
-        <Card/>
-        <Card/>
+        <Card v-for="spot in TopScenitcSpots" :spot="spot" :key="spot.ID" @open="openDetail"/>
       </div>
     </section >
     <section class="category-section">
@@ -54,15 +49,18 @@
         <p>– Hans Christian Anderson-</p>
       </div>
     </section>
-    <DetailDialog v-model="isShowDetail"/>
+    <DetailDialog v-model="isShowDetail" :scenticDetail="scenticDetail"/>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent, ref, onMounted } from 'vue';
 import Carousel from '@/components/common/Carousel.vue';
 import Card from '@/components/common/Card.vue';
-
+import apiHandler from '@/api-handlers/api-handler';
+import { IScenicSpotTourismInfo } from '@/types/api-handler';
+import { useRoute, useRouter } from 'vue-router';
+import { Category } from '@/types/enum';
 
 export default defineComponent({
   name: 'Home',
@@ -71,14 +69,56 @@ export default defineComponent({
     Card
   },
   setup() {
+    const route = useRoute();
+    const router = useRouter();
     const isShowDetail = ref<boolean>(false);
-    const openDetail = () => {
+    const TopScenitcSpots = ref<IScenicSpotTourismInfo[] | null>(null);
+    const scenticDetail = ref<IScenicSpotTourismInfo | null>(null);
+    const openDetail = (spot: IScenicSpotTourismInfo) => {
       isShowDetail.value = true;
+      scenticDetail.value = spot;
     }
+    const get8CityScenicSpots = async() => {
+      try {
+        const {data} = await apiHandler.getAllScenicSpots(8);
+        TopScenitcSpots.value = data.map((spot) => ({
+          ...spot,
+          OpenTime: '全天候開放'
+        }));
+      } catch (error) {
+        console.log(error)
+      }
+    };
+    const handleSearch = (v: any) => {
+      const { category, subCategory, location } = v;
+      switch(category) {
+        case Category.Sight:
+          router.push({name: 'TouristSight', params: {
+            subCategory, location
+          }});
+          break;
+        case Category.Event:
+          router.push({name: 'TouristEvent', params: {
+            subCategory, location
+          }});
+          break;
+      }
+    };
+    onMounted(() => {
+      console.log(route)
+    })
     return {
       isShowDetail,
+      TopScenitcSpots,
+      scenticDetail,
       openDetail,
+      get8CityScenicSpots,
+      handleSearch,
     }
+  },
+  created() {
+    this.get8CityScenicSpots();
+    
   }
 });
 </script>
@@ -107,8 +147,8 @@ export default defineComponent({
     margin-top: 46px;
     .card-list {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      grid-gap: 10px;
+      grid-template-columns: repeat(auto-fit, minmax(294px, 1fr));
+      grid-gap: 20px;
       .card {
         margin-bottom: 36px;
         margin: 0px auto 46px;

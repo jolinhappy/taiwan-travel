@@ -11,7 +11,7 @@
       <li class="nav-item">
         <router-link to="/tourist-sight">景點導覽</router-link>
       </li>
-        <router-link to="/tourist-event">觀光活動</router-link>
+        <router-link to="/tourist-activity">觀光活動</router-link>
     </ul>
   </nav>
 </template>
@@ -54,6 +54,10 @@ nav {
     .router-link-exact-active {
       color: #08A6BB;
       font-weight: bold;
+    }
+    .router-link-active {
+      color: #08A6BB;
+      font-weight: bold;      
     }
     .nav-item:hover {
       color: #08A6BB;

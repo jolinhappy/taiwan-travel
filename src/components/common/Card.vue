@@ -2,22 +2,22 @@
   <div class="card">
     <div class="card-container">
       <div class="card-image">
-        <img src="https://picsum.photos/650/480?random=1" alt="資訊照片">
+        <img :src="pictureFilter(spot.Picture)" alt="資訊照片">
       </div>
       <div class="card-body">
         <div class="title">
-          <h3>台北大稻埕</h3>
+          <h3>{{spot.Name}}</h3>
           <div class="time-info">
             <el-icon>
               <Clock/>
             </el-icon>
-            全天候開放
+            {{spot.OpenTime || '無資料'}}
           </div>
         </div>
 
         <p class="address">
           <img src="../../assets/location.png" alt="地標圖示">
-          台北市XX區XX路
+          {{spot.Address || spot.City}}
         </p>
       </div>
       <div class="card-footer">
@@ -30,17 +30,32 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { Clock } from '@element-plus/icons';
+import { ITourismPicture } from '@/types/api-handler';
 
 export default defineComponent({
   components: {
     Clock
   },
-  setup(_, { emit }) {
-    const onClick = () => {
-      emit('open')
+  props: {
+    spot: {
+      type: Object,
+      default: () => ({})
     }
+  },
+  setup(props, { emit, attrs }) {
+    const onClick = () => {
+      emit('open', props.spot);
+    }
+    const pictureFilter = (picture: ITourismPicture | null) => {
+      if (!picture?.PictureUrl1) {
+        return require('../../assets/no-image-found.png');
+      } else {
+        return picture.PictureUrl1;
+      }
+    };
     return {
       onClick,
+      pictureFilter,
     }
   },
 })
@@ -50,12 +65,14 @@ export default defineComponent({
 <style lang="scss">
 .card {
   .card-container {
-    max-width: 294px;
-    height: 346px;
+    width: 294px;
+    height: 100%;
     background: #ffffff;
     box-shadow: 2px 2px 4px rgba(114, 142, 171, 0.1), -6px -6px 20px rgba(255, 255, 255, 0.6), 4px 4px 20px rgba(111, 140, 176, 0.41);
     border-radius: 8px;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
     .card-image {
       height: 184px;
       img {
@@ -66,15 +83,18 @@ export default defineComponent({
     }
     .card-body {
       padding: 31px 20px 23px 20px;
+      flex: 1;
       .title {
         display: flex;
         justify-content: space-between;
-        align-items: flex-end;
+        align-items: flex-start;
         margin-bottom: 17px;
+        flex-direction: column;
           h3 {
           color: #525151;
           font-size: 20px;
           font-weight: bold; 
+          margin-bottom: 10px;
         }
         .time-info {
           color: #6F7789;
@@ -92,6 +112,9 @@ export default defineComponent({
         color: #6F7789;
         font-size: 16px;
         font-weight: 500;
+        overflow:hidden;
+        white-space: nowrap;
+        // text-overflow: ellipsis;
         img {
           width: 12px;
           height: 15px;
@@ -101,6 +124,7 @@ export default defineComponent({
     }
     .card-footer {
       text-align: center;
+      margin-bottom: 20px;
       .el-button {
         --el-button-border-color: #08A6BB;
         border-width: 4px;

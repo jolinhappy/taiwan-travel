@@ -2,27 +2,34 @@
   <div class="carousel">
     <el-carousel height="444px">
       <el-carousel-item v-for="picture in coverPictures" :key="picture">
-        <!-- <h3 class="small">{{ item }}</h3> -->
         <img :src="picture.img" alt="封面輪播圖">
       </el-carousel-item>
     </el-carousel>
     <div class="search-form">
       <h2>Welcome to Travel Taiwan</h2>
-      <el-form :inline="true" :model="formInline" class="demo-form-inline">
+      <el-form :inline="true">
         <el-form-item label="">
-          <el-select placeholder="類別" class="category-select">
-            <el-option label="Zone one" value="shanghai"></el-option>
-            <el-option label="Zone two" value="beijing"></el-option>
+          <el-select placeholder="" class="category-select" v-model="selectedCategory" v-if="isHomePage">
+            <el-option label="景點" :value="1"></el-option>
+            <el-option label="活動" :value="2"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="">
-          <el-select placeholder="縣市" class="location-select">
-            <el-option label="Zone one" value="shanghai"></el-option>
-            <el-option label="Zone two" value="beijing"></el-option>
+          <el-select placeholder="類別" class="sub-category-select" v-model="selectedSubCategory">
+            <template v-for="subCategoryOption in currentSubCategoryOptions" :key="subCategoryOption.id">
+              <el-option :label="subCategoryOption.name" :value="subCategoryOption.name"></el-option>
+            </template>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="">
+          <el-select placeholder="縣市" class="location-select" v-model="selectedLocation">
+            <template v-for="location in locationList" :key="location.id">
+              <el-option :label="location.name" :value="location.value"></el-option>
+            </template>
           </el-select>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="onSubmit">
+          <el-button type="primary" @click="onSearch">
             <img src="../../assets/search-icon.png" alt="搜尋圖示">
           </el-button>
         </el-form-item>
@@ -32,23 +39,65 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, computed } from 'vue';
+import { taiwanLocation, sightSubCategory, eventSubCategory, } from '@/utils/location';
+import apiHandler from '@/api-handlers/api-handler';
+import { IScenicSpotTourismInfo } from '@/types/api-handler';
+import { useRouter, useRoute } from 'vue-router';
+import { Category } from '@/types/enum';
 
 export default defineComponent({
-  setup() {
+  name: 'Carousel',
+  emits: ['search'],
+  setup(_, {emit}) {
+    const router = useRouter();
+    const route = useRoute();
+    const selectedCategory = ref<Category>(1);
+    const selectedSubCategory = ref<number | null>(null);
+    const selectedLocation = ref<string | null>(null);
+    const searchResult = ref<IScenicSpotTourismInfo[] | null>(null);
+    const locationList = taiwanLocation;
+    const currentSubCategoryOptions = computed(() => selectedCategory.value === Category.Sight ? sightSubCategory : eventSubCategory);
     const coverPictures = ref<any>([
       {
-        img: "https://picsum.photos/1200/480?random=1"
+        img: "https://www.taiwan.net.tw/att/event/d9db59b2-9d6d-4d7e-8231-fed0d97bcc52.jpg"
       },
       {
-        img: "https://picsum.photos/1200/480?random=23"
+        img: "http://travel.nantou.gov.tw/manasystem/files/scenic/20140310095216_清境農場青青草原-1.jpg"
       },
       {
-        img: "https://picsum.photos/1200/480?random=53"
+        img: "http://travel.nantou.gov.tw/manasystem/files/scenic/20120525145937_food_food_0219.jpg"
       }
-    ])
+    ]);
+
+    const getCityEvents = async(city: string) => {
+      try {
+        const res = await apiHandler.getOneCityActivities(city);
+        if (res) {
+          searchResult.value = res.data;
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    const isHomePage = computed(() => 
+      !route.path.split('/').includes('tourist-sight') && !route.path.split('/').includes('tourist-activity'))
+    const onSearch = () => {
+      emit('search', {
+        category: selectedCategory.value,
+        subCategory: selectedSubCategory.value,
+        location: selectedLocation.value,
+      });
+    };
     return {
       coverPictures,
+      locationList,
+      selectedCategory,
+      selectedSubCategory,
+      selectedLocation,
+      currentSubCategoryOptions,
+      isHomePage,
+      onSearch,
     }
   },
 })
@@ -91,8 +140,6 @@ export default defineComponent({
     }
     .el-form {
       display: flex;
-      justify-content: center;
-      align-items: center;
       .el-button {
         width: 37px;
         height: 37px;
@@ -109,11 +156,15 @@ export default defineComponent({
         }
       }
       .el-select{
+        --el-input-focus-border: #08A6BB;
         &.category-select {
-          width: 107px;
+          width: 70px;
+        }
+        &.sub-category-select {
+          width: 110px;
         }      
         &.location-select {
-          width: 175px;
+          width: 125px;
         }
       }
 
@@ -137,6 +188,9 @@ export default defineComponent({
         }
         .el-select{
           &.category-select {
+            width: 120px;
+          }
+          &.sub-category-select {
             width: 191px;
           }      
           &.location-select {
