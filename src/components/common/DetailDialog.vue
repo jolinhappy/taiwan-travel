@@ -69,7 +69,6 @@ export default defineComponent({
     });
     const pictureFilter = (picture: ITourismPicture | null) => {
       if (!picture?.PictureUrl1) {
-        console.log('dd')
         return require('../../assets/no-image-found.png');
       } else {
         return picture.PictureUrl1;

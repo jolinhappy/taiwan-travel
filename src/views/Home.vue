@@ -106,7 +106,6 @@ export default defineComponent({
     };
 
     const searchActivitiesByCategory = async(categoryName: string) => {
-      console.log('dd')
       router.push({name: 'TouristActivity', params: {
         subCategory: categoryName, location: null
       }});

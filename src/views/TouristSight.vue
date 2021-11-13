@@ -58,7 +58,6 @@ export default defineComponent({
       })
     };
     const getCitySights = async(city: string, subCategory: string) => {
-      console.log(city, subCategory)
       try {
         if (!city) {
           const res = await apiHandler.getAllScenicSpots(300);

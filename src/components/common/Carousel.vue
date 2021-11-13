@@ -136,6 +136,10 @@ export default defineComponent({
         background: linear-gradient(0deg, #08A6BB,20%, #08A6BB);
         --el-button-border-color: #08A6BB;
         --el-button-hover-color: #08A6BB;
+        &:hover {
+          background: #19c9e1;
+          --el-button-border-color: #19c9e1;
+        }
         span {
           img {
             width: 21.14px;

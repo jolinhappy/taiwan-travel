@@ -1,9 +1,11 @@
 <template>
   <nav class="navigation">
-    <div class="main-title-container">
-      <img src="../../assets/logo.png" alt="logo-image">
-      <h1>Travel Taiwan</h1>
-    </div>
+    <router-link to="/">
+      <div class="main-title-container">
+        <img src="../../assets/logo.png" alt="logo-image">
+        <h1>Travel Taiwan</h1>
+      </div>
+    </router-link>
     <ul class="nav-items">
       <li class="nav-item">
         <router-link to="/">首頁</router-link>
