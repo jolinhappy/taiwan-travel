@@ -57,10 +57,10 @@ export default defineComponent({
     const currentSubCategoryOptions = computed(() => selectedCategory.value === Category.Sight ? sightSubCategory : eventSubCategory);
     const coverPictures = ref<any>([
       {
-        img: "https://www.taiwan.net.tw/att/event/d9db59b2-9d6d-4d7e-8231-fed0d97bcc52.jpg"
+        img: "https://www.taiwan.net.tw/att/event/0c1f6cf0-7f06-46f0-9b8c-073f9d43f8d0.jpg"
       },
       {
-        img: "http://travel.nantou.gov.tw/manasystem/files/scenic/20150506121525_2015-3-4-9-45-43-nf1.jpg"
+        img: "https://www.matsu-nsa.gov.tw/FileArtPic.ashx?id=2848&w=1280&h=960"
       },
       {
         img: "https://www.taiwan.net.tw/att/event/e15d764e-9695-4447-925e-aa86ccb73152.jpg"
