@@ -21,6 +21,12 @@
 </template>
 
 <style lang="scss">
+.navigation {
+  position: fixed;
+  width: 100%;
+  z-index: 99;
+  top: 0;
+}
 nav {
   height: 80px;
   background-color: #ffffff;
