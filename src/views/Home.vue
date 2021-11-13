@@ -16,34 +16,34 @@
         <p class="description">各種不同的活動內容<br>邀請您一銅來共襄盛舉！</p>
       </div>
       <div class="category-list-container">
-        <div class="category">
+        <div class="category" @click="searchActivitiesByCategory('年度活動')">
           <div class="category-image">
-            <img src="https://picsum.photos/650/480?random=67" alt="活動類別圖">
+            <img src="https://www.taiwan.net.tw/att/event/a694272c-4ac1-47e6-a4a0-e806d44e1dd7.jpg" alt="活動類別圖">
           </div>
           <h3>年度活動</h3>
         </div>
-        <div class="category">
+        <div class="category" @click="searchActivitiesByCategory('藝文活動')">
           <div class="category-image">
-            <img src="https://picsum.photos/650/480?random=57" alt="活動類別圖">
+            <img src="https://www.taiwan.net.tw/att/event/278ea58f-42de-4252-a19a-dc29dc739f8e.jpg" alt="活動類別圖">
           </div>
           <h3>藝文活動</h3>
         </div>
-        <div class="category">
+        <div class="category" @click="searchActivitiesByCategory('節慶活動')">
           <div class="category-image">
-            <img src="https://picsum.photos/650/480?random=29" alt="活動類別圖">
+            <img src="https://www.taiwan.net.tw/att/event/0ab60674-d293-4334-a8fd-c99314ddd394.jpg" alt="活動類別圖">
           </div>
           <h3>節慶活動</h3>
         </div>
         <div class="category">
           <div class="category-image">
-            <img src="https://picsum.photos/650/480?random=58" alt="活動類別圖">
+            <img src="https://www.taiwan.net.tw/att/event/4970b717-4f85-470e-ad64-abaec0bd0ae2.jpg" alt="活動類別圖">
           </div>
           <h3>其他</h3>
         </div>
       </div>
     </section>
     <section class="cover-section">
-      <img src="https://picsum.photos/650/480?random=60" alt="風景圖">
+      <img src="https://www.taiwan.net.tw/att/event/56481545-6a53-4e4c-9365-4bd54e612fdf.jpg" alt="童玩節水舞燈光秀暨夜景">
       <div class="cover-text">
         <p>“To travel is to live”</p>
         <p>– Hans Christian Anderson-</p>
@@ -98,15 +98,19 @@ export default defineComponent({
           }});
           break;
         case Category.Event:
-          router.push({name: 'TouristEvent', params: {
+          router.push({name: 'TouristActivity', params: {
             subCategory, location
           }});
           break;
       }
     };
-    onMounted(() => {
-      console.log(route)
-    })
+
+    const searchActivitiesByCategory = async(categoryName: string) => {
+      console.log('dd')
+      router.push({name: 'TouristActivity', params: {
+        subCategory: categoryName, location: null
+      }});
+    }
     return {
       isShowDetail,
       TopScenitcSpots,
@@ -114,6 +118,7 @@ export default defineComponent({
       openDetail,
       get8CityScenicSpots,
       handleSearch,
+      searchActivitiesByCategory,
     }
   },
   created() {

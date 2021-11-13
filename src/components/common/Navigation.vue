@@ -11,7 +11,9 @@
       <li class="nav-item">
         <router-link to="/tourist-sight">景點導覽</router-link>
       </li>
+      <li class="nav-item">
         <router-link to="/tourist-activity">觀光活動</router-link>
+      </li>
     </ul>
   </nav>
 </template>

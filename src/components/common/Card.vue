@@ -112,9 +112,6 @@ export default defineComponent({
         color: #6F7789;
         font-size: 16px;
         font-weight: 500;
-        overflow:hidden;
-        white-space: nowrap;
-        // text-overflow: ellipsis;
         img {
           width: 12px;
           height: 15px;

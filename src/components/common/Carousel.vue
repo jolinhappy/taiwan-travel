@@ -41,8 +41,6 @@
 <script lang="ts">
 import { defineComponent, ref, computed } from 'vue';
 import { taiwanLocation, sightSubCategory, eventSubCategory, } from '@/utils/location';
-import apiHandler from '@/api-handlers/api-handler';
-import { IScenicSpotTourismInfo } from '@/types/api-handler';
 import { useRouter, useRoute } from 'vue-router';
 import { Category } from '@/types/enum';
 
@@ -55,7 +53,6 @@ export default defineComponent({
     const selectedCategory = ref<Category>(1);
     const selectedSubCategory = ref<number | null>(null);
     const selectedLocation = ref<string | null>(null);
-    const searchResult = ref<IScenicSpotTourismInfo[] | null>(null);
     const locationList = taiwanLocation;
     const currentSubCategoryOptions = computed(() => selectedCategory.value === Category.Sight ? sightSubCategory : eventSubCategory);
     const coverPictures = ref<any>([
@@ -63,25 +60,16 @@ export default defineComponent({
         img: "https://www.taiwan.net.tw/att/event/d9db59b2-9d6d-4d7e-8231-fed0d97bcc52.jpg"
       },
       {
-        img: "http://travel.nantou.gov.tw/manasystem/files/scenic/20140310095216_清境農場青青草原-1.jpg"
+        img: "http://travel.nantou.gov.tw/manasystem/files/scenic/20150506121525_2015-3-4-9-45-43-nf1.jpg"
       },
       {
-        img: "http://travel.nantou.gov.tw/manasystem/files/scenic/20120525145937_food_food_0219.jpg"
+        img: "https://www.taiwan.net.tw/att/event/e15d764e-9695-4447-925e-aa86ccb73152.jpg"
       }
     ]);
 
-    const getCityEvents = async(city: string) => {
-      try {
-        const res = await apiHandler.getOneCityActivities(city);
-        if (res) {
-          searchResult.value = res.data;
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
     const isHomePage = computed(() => 
       !route.path.split('/').includes('tourist-sight') && !route.path.split('/').includes('tourist-activity'))
+    
     const onSearch = () => {
       emit('search', {
         category: selectedCategory.value,

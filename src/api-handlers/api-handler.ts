@@ -16,7 +16,7 @@ export default {
     return apiHelper.get<IRestaurantTourismInfo[]>('Restaurant');
   },
   getOneCityRestaurants(city: string) {
-    return apiHelper.get<IRestaurantTourismInfo[]>(`Restaurant/${city}?$format=JSON`);
+    return apiHelper.get<IRestaurantTourismInfo[]>(`Restaurant/${city}`);
   },
   getAllHotels() {
     return apiHelper.get<IHotelTourismInfo[]>('Hotel');
